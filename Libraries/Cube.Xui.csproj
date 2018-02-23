@@ -91,7 +91,9 @@
     <Compile Include="Messages\EmptyMessage.cs" />
     <Compile Include="Messages\FileDialogMessage.cs" />
     <Compile Include="Operations\MessengerOperator.cs" />
+    <Compile Include="RelayKeyBinding.cs" />
     <Compile Include="Triggers\DisposeAction.cs" />
+    <Compile Include="Triggers\InvokeCommandAction.cs" />
     <Compile Include="Triggers\MessengerTrigger.cs" />
     <Compile Include="Bindable.cs" />
     <Compile Include="BindableCollection.cs" />
