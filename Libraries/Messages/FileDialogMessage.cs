@@ -25,58 +25,25 @@ namespace Cube.Xui
     /// FileDialogMessage
     ///
     /// <summary>
-    /// ファイルダイアログに表示する情報を保持するためのクラスです。
+    /// ファイル選択用ダイアログまたはディレクトリ選択用ダイアログに
+    /// 表示する情報を保持するためのクラスです。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class FileDialogMessage
+    public abstract class FileSystemDialogMessage
     {
         #region Properties
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CheckPathExists
-        ///
-        /// <summary>
-        /// 指定されたファイルの存在チェックを実行するかどうかを示す値を
-        /// 取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool CheckPathExists { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// InitialDirectory
-        ///
-        /// <summary>
-        /// ディレクトリの初期設定を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string InitialDirectory { get; set; }
 
         /* ----------------------------------------------------------------- */
         ///
         /// FileName
         ///
         /// <summary>
-        /// 選択されたファイルのパスを取得または設定します。
+        /// 選択されたパスを取得または設定します。
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         public string FileName { get; set; }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Filter
-        ///
-        /// <summary>
-        /// フィルタを表す文字列を取得または設定します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public string Filter { get; set; } = "All Files (*.*)|*.*";
 
         /* ----------------------------------------------------------------- */
         ///
@@ -105,6 +72,114 @@ namespace Cube.Xui
 
     /* --------------------------------------------------------------------- */
     ///
+    /// FileDialogMessage
+    ///
+    /// <summary>
+    /// ファイルダイアログに表示する情報を保持するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public abstract class FileDialogMessage : FileSystemDialogMessage
+    {
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CheckPathExists
+        ///
+        /// <summary>
+        /// 指定されたファイルの存在チェックを実行するかどうかを示す値を
+        /// 取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool CheckPathExists { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// InitialDirectory
+        ///
+        /// <summary>
+        /// ディレクトリの初期設定を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string InitialDirectory { get; set; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Filter
+        ///
+        /// <summary>
+        /// フィルタを表す文字列を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public string Filter { get; set; } = "All Files (*.*)|*.*";
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// DirectoryDialogMessage
+    ///
+    /// <summary>
+    /// FolderBrowser に表示する情報を保持するためのクラスです。
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class DirectoryDialogMessage : FileSystemDialogMessage
+    {
+        #region Constructors
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// DirectoryDialogMessage
+        ///
+        /// <summary>
+        /// オブジェクトを初期化します。
+        /// </summary>
+        ///
+        /// <param name="callback">コールバック用オブジェクト</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public DirectoryDialogMessage(Action<DirectoryDialogMessage> callback)
+        {
+            Callback = callback;
+        }
+
+        #endregion
+
+        #region Properties
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Callback
+        ///
+        /// <summary>
+        /// コールバック用オブジェクトを取得します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public Action<DirectoryDialogMessage> Callback { get; }
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// NewButton
+        ///
+        /// <summary>
+        /// 新規作成ボタンを表示するかどうかを示す値を取得または設定します。
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool NewButton { get; set; } = true;
+
+        #endregion
+    }
+
+    /* --------------------------------------------------------------------- */
+    ///
     /// OpenFileDialogMessage
     ///
     /// <summary>
@@ -127,7 +202,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public OpenFileDialogMessage(Action<OpenFileDialogMessage> callback) : base()
+        public OpenFileDialogMessage(Action<OpenFileDialogMessage> callback)
         {
             Callback        = callback;
             CheckPathExists = true;
@@ -197,7 +272,7 @@ namespace Cube.Xui
         /// <param name="callback">コールバック用オブジェクト</param>
         ///
         /* ----------------------------------------------------------------- */
-        public SaveFileDialogMessage(Action<SaveFileDialogMessage> callback) : base()
+        public SaveFileDialogMessage(Action<SaveFileDialogMessage> callback)
         {
             Callback        = callback;
             CheckPathExists = false;

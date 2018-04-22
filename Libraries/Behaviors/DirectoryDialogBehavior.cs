@@ -15,22 +15,20 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Windows;
-using System.Windows.Interactivity;
+using System.Windows.Forms;
 
 namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposeAction
+    /// DirectoryDialogBehavior
     ///
     /// <summary>
-    /// DataContext の開放処理を実行する TriggerAction です。
+    /// FolderBrowserDialog を表示する Behavior です。
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DisposeAction : TriggerAction<FrameworkElement>
+    public class DirectoryDialogBehavior : MessengerBehavior<DirectoryDialogMessage>
     {
         /* ----------------------------------------------------------------- */
         ///
@@ -41,11 +39,16 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(object notused)
+        protected override void Invoke(DirectoryDialogMessage e)
         {
-            var dc = AssociatedObject.DataContext as IDisposable;
-            AssociatedObject.DataContext = null;
-            dc?.Dispose();
+            var dialog = new FolderBrowserDialog { ShowNewFolderButton = e.NewButton };
+
+            if (!string.IsNullOrEmpty(e.Title)) dialog.Description = e.Title;
+            if (!string.IsNullOrEmpty(e.FileName)) dialog.SelectedPath = e.FileName;
+
+            e.Result = dialog.ShowDialog() == DialogResult.OK;
+            if (e.Result) e.FileName = dialog.SelectedPath;
+            e.Callback?.Invoke(e);
         }
     }
 }
