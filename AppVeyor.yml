@@ -1,4 +1,4 @@
-version: 1.10.0.{build}
+version: 1.11.0.{build}
 branches:
     only:
         - master
@@ -12,6 +12,7 @@ platform: Any CPU
 configuration: Release
 before_build:
     - nuget sources add -name Cube.Core -source https://ci.appveyor.com/nuget/cube.core
+    - nuget sources add -name Cube.FileSystem -source https://ci.appveyor.com/nuget/cube.filesystem
     - nuget restore Cube.Xui.sln
 build:
     parallel: true
@@ -21,6 +22,7 @@ build:
 test_script:
     - >
       ..\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe
+      -log:Error
       -register:user
       -target:nunit3-console.exe
       -targetargs:Cube.Xui.Tests.dll
