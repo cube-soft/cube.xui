@@ -95,6 +95,7 @@
     <Compile Include="Sources\Messages\FileMessage.cs" />
     <Compile Include="Sources\Triggers\DisposeAction.cs" />
     <Compile Include="Sources\Triggers\MessengerTrigger.cs" />
+    <Compile Include="Sources\Triggers\InvokeCommandAction.cs" />
     <Compile Include="Sources\Bindable.cs" />
     <Compile Include="Sources\BindableCollection.cs" />
     <Compile Include="Sources\BindableCommand.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Sources\LoggerExtension.cs" />
     <Compile Include="Sources\MessengerViewModel.cs" />
     <Compile Include="Sources\ResourceCulture.cs" />
+    <Compile Include="Sources\RelayKeyBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Cube.snk" />
