@@ -15,54 +15,42 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Converters;
+using Cube.Xui.Behaviors;
 using NUnit.Framework;
+using System.Windows.Controls;
 
-namespace Cube.Xui.Tests.Converters
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StringConverterTest
+    /// CommandBehaviorTest
     ///
     /// <summary>
-    /// ValueToString のテスト用クラスです。
+    /// Tests for the CommandBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class StringConverterTest : ConvertHelper
+    class CommandBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ValueToString
+        /// Properties
         ///
         /// <summary>
-        /// 文字列に変換するテストを実行します。
+        /// Confirms default values of properties.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ValueToString() => Assert.That(
-            Convert<string>(new ValueToString(), 1),
-            Is.EqualTo("1")
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueToString_Null
-        ///
-        /// <summary>
-        /// 引数に null を指定した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ValueToString_Null() => Assert.That(
-            Convert<string>(new ValueToString(), null),
-            Is.Empty
-        );
+        public void Properties()
+        {
+            var src = new CommandBehavior<TextBox, int>();
+            Assert.That(src.Command,          Is.Null);
+            Assert.That(src.CommandParameter, Is.EqualTo(0));
+        }
 
         #endregion
     }

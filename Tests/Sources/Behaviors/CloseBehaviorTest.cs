@@ -15,72 +15,67 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Converters;
+using Cube.Xui.Behaviors;
 using NUnit.Framework;
-using System.Windows.Media.Imaging;
+using System.Threading;
+using System.Windows;
 
-namespace Cube.Xui.Tests.Converters
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ImageConverterTest
+    /// CloseBehaviorTest
     ///
     /// <summary>
-    /// Image オブジェクトに関する Converter のテスト用クラスです。
+    /// Tests for the CloseBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class ImageConverterTest : ConvertHelper
+    [Apartment(ApartmentState.STA)]
+    class CloseBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ImageConverter
+        /// Create
         ///
         /// <summary>
-        /// ImageConverter.Convert のテストを実行します。
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ImageConverter() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), Properties.Resources.Logo),
-            Is.Not.Null
-        );
+        public void Create() => Assert.DoesNotThrow(() =>
+        {
+            var vm   = new MockViewModel();
+            var view = new Window { DataContext = vm };
+            var src  = new CloseBehavior();
+
+            src.Attach(view);
+            src.Detach();
+        });
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ImageConverter_Icon
+        /// Create_WithoutVM
         ///
         /// <summary>
-        /// アイコンを指定して ImageConverter.Convert を実行した時の挙動を
-        /// 確認します。
+        /// Executes the test to create, attach, and detach method without
+        /// any ViewModel objects.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void ImageConverter_Icon() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), Properties.Resources.App),
-            Is.Not.Null
-        );
+        public void Create_WithoutVM() => Assert.DoesNotThrow(() =>
+        {
+            var view = new Window();
+            var src  = new CloseBehavior();
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ImageConverter_Null
-        ///
-        /// <summary>
-        /// null を指定して ImageConverter.Convert を実行した時の挙動を
-        /// 確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ImageConverter_Null() => Assert.That(
-            Convert<BitmapImage>(new ImageConverter(), null),
-            Is.Null
-        );
+            src.Attach(view);
+            src.Detach();
+        });
 
         #endregion
     }

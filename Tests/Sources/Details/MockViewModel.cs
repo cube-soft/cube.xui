@@ -15,54 +15,39 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Converters;
 using NUnit.Framework;
+using System;
 
-namespace Cube.Xui.Tests.Converters
+namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StringConverterTest
+    /// MockViewModel
     ///
     /// <summary>
-    /// ValueToString のテスト用クラスです。
+    /// Represents the ViewModel for tests.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class StringConverterTest : ConvertHelper
+    class MockViewModel : IMessengerViewModel
     {
-        #region Tests
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ValueToString
+        /// Register
         ///
         /// <summary>
-        /// 文字列に変換するテストを実行します。
+        /// Registers the action when the message of type T is received.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void ValueToString() => Assert.That(
-            Convert<string>(new ValueToString(), 1),
-            Is.EqualTo("1")
-        );
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// ValueToString_Null
-        ///
-        /// <summary>
-        /// 引数に null を指定した時の挙動を確認します。
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void ValueToString_Null() => Assert.That(
-            Convert<string>(new ValueToString(), null),
-            Is.Empty
-        );
+        public IDisposable Register<T>(object receiver, Action<T> action)
+        {
+            Assert.That(receiver, Is.Not.Null);
+            Assert.That(action,   Is.Not.Null);
+            return Disposable.Create(() => { });
+        }
 
         #endregion
     }

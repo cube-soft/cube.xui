@@ -15,103 +15,102 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Collections.Generic;
-using System.Threading;
+using Cube.Generics;
+using System.Windows;
 
-namespace Cube.Xui.Mixin
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// BindableExtension
+    /// FileDropBehavior
     ///
     /// <summary>
-    /// Provides extended methods of the Bindable classes.
+    /// Represents the behavior of Drag&amp;Drop files.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public static class BindableExtension
+    public class FileDropBehavior<T> : CommandBehavior<T> where T : UIElement
     {
-        #region Methods
-
-        #region ToBindable
+        #region Implementations
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToBindable
+        /// OnAttached
         ///
         /// <summary>
-        /// Converts to a Bindable(T) object.
+        /// Called after the action is attached to an AssociatedObject.
         /// </summary>
         ///
-        /// <param name="src">Source object.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public static Bindable<T> ToBindable<T>(this T src) => new Bindable<T>(src);
+        protected override void OnAttached()
+        {
+            base.OnAttached();
+            AssociatedObject.PreviewDragOver += WhenDragOver;
+            AssociatedObject.PreviewDrop += WhenDrop;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToBindable
+        /// OnDetaching
         ///
         /// <summary>
-        /// Converts to a Bindable(T) object.
+        /// Called when the action is being detached from its
+        /// AssociatedObject, but before it has actually occurred.
         /// </summary>
         ///
-        /// <param name="src">Source object.</param>
-        /// <param name="context">Synchronization context.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public static Bindable<T> ToBindable<T>(this T src,
-            SynchronizationContext context) => new Bindable<T>(src) { Context = context };
+        protected override void OnDetaching()
+        {
+            AssociatedObject.PreviewDragOver -= WhenDragOver;
+            AssociatedObject.PreviewDrop -= WhenDrop;
+            base.OnDetaching();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToBindable
+        /// WhenDrop
         ///
         /// <summary>
-        /// Converts to a BindableCollection(T) object.
+        /// Occurs when the PreviewDrop event is fired.
         /// </summary>
         ///
-        /// <param name="src">Source object.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src) =>
-            new BindableCollection<T>(src);
+        private void WhenDrop(object s, DragEventArgs e)
+        {
+            var dest = GetData(e.Data);
+            e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
+            if (e.Handled) Command.Execute(dest);
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ToBindable
+        /// WhenDragOver
         ///
         /// <summary>
-        /// Converts to a BindableCollection(T) object.
+        /// Occurs when the PreviewDragOver event is fired.
         /// </summary>
         ///
-        /// <param name="src">Source object.</param>
-        /// <param name="context">Synchronization context.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public static BindableCollection<T> ToBindable<T>(this IEnumerable<T> src,
-            SynchronizationContext context) =>
-            new BindableCollection<T>(src) { Context = context };
-
-        #endregion
-
-        #region Raise
+        private void WhenDragOver(object s, DragEventArgs e)
+        {
+            var dest = GetData(e.Data);
+            e.Handled = (dest != null) && (Command?.CanExecute(dest) ?? false);
+            e.Effects = e.Handled ? DragDropEffects.Copy : DragDropEffects.None;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// RaiseValueChanged
+        /// GetData
         ///
         /// <summary>
-        /// Raises a PropertyChanged event against the Value property.
+        /// Gets the collection of dropped files.
         /// </summary>
         ///
-        /// <param name="src">Target object.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        public static void RaiseValueChanged<T>(this Bindable<T> src) =>
-            src.RaisePropertyChanged(nameof(src.Value));
-
-        #endregion
+        private string[] GetData(IDataObject src) =>
+            src.GetDataPresent(DataFormats.FileDrop) ?
+            src.GetData(DataFormats.FileDrop).TryCast<string[]>() :
+            null;
 
         #endregion
     }
