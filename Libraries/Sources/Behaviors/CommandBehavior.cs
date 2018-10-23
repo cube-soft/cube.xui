@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Generics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
@@ -47,8 +46,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         public ICommand Command
         {
-            get => GetValue(CommandProperty) as ICommand;
-            set => SetValue(CommandProperty, value);
+            get;// => GetValue(CommandProperty) as ICommand;
+            set;// => SetValue(CommandProperty, value);
         }
 
         /* ----------------------------------------------------------------- */
@@ -63,10 +62,6 @@ namespace Cube.Xui.Behaviors
         public static readonly DependencyProperty CommandProperty =
             DependencyFactory.Create<CommandBehavior<TView>, ICommand>(
                 nameof(Command), (s, e) => s.Command = e);
-
-        #endregion
-
-        #region Dependencies
 
         #endregion
     }
@@ -97,8 +92,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         public TParameter CommandParameter
         {
-            get => GetValue(CommandParameterProperty).TryCast<TParameter>();
-            set => SetValue(CommandParameterProperty, value);
+            get;// => GetValue(CommandParameterProperty).TryCast<TParameter>();
+            set;// => SetValue(CommandParameterProperty, value);
         }
 
         /* ----------------------------------------------------------------- */
