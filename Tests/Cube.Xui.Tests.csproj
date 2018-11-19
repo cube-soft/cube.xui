@@ -40,25 +40,25 @@
       <HintPath>..\..\packages\Cube.Backwards.1.5.0\lib\net35\Cube.Backwards.dll</HintPath>
     </Reference>
     <Reference Include="Cube.Core">
-      <HintPath>..\..\packages\Cube.Core.1.12.0\lib\net35\Cube.Core.dll</HintPath>
+      <HintPath>..\..\packages\Cube.Core.1.13.0\lib\net35\Cube.Core.dll</HintPath>
     </Reference>
     <Reference Include="Cube.FileSystem">
-      <HintPath>..\..\packages\Cube.FileSystem.1.12.0\lib\net35\Cube.FileSystem.dll</HintPath>
+      <HintPath>..\..\packages\Cube.FileSystem.1.13.0\lib\net35\Cube.FileSystem.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1\lib\net35\GalaSoft.MvvmLight.dll</HintPath>
+      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net35\GalaSoft.MvvmLight.dll</HintPath>
     </Reference>
     <Reference Include="GalaSoft.MvvmLight.Extras">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1\lib\net35\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net35\GalaSoft.MvvmLight.Extras.dll</HintPath>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\..\packages\log4net.2.0.8\lib\net35-full\log4net.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\..\packages\NUnit.3.10.1\lib\net35\nunit.framework.dll</HintPath>
+      <HintPath>..\..\packages\NUnit.3.11.0\lib\net35\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System.Windows.Interactivity">
-      <HintPath>..\..\packages\MvvmLightLibs.5.4.1\lib\net35\System.Windows.Interactivity.dll</HintPath>
+      <HintPath>..\..\packages\MvvmLightLibs.5.4.1.1\lib\net35\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Threading">
       <HintPath>..\..\packages\TaskParallelLibrary.1.0.2856.0\lib\Net35\System.Threading.dll</HintPath>
@@ -67,15 +67,23 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="WindowsBase" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sources\Behaviors\CheckedBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\CloseBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\ClosingBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\CommandBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\EditBehaviorTest.cs" />
     <Compile Include="Sources\Behaviors\FileDropBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\PasswordBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\SelectionBehaviorTest.cs" />
+    <Compile Include="Sources\Behaviors\WindowsFormsBehaviorTest.cs" />
     <Compile Include="Sources\Converters\BooleanConverterTest.cs" />
     <Compile Include="Sources\Converters\ImageConverterTest.cs" />
     <Compile Include="Sources\Converters\StringConverterTest.cs" />
@@ -85,9 +93,10 @@
     <Compile Include="Sources\Details\Person.cs" />
     <Compile Include="Sources\BindableCollectionTest.cs" />
     <Compile Include="Sources\BindableCommandTest.cs" />
+    <Compile Include="Sources\BindableElementTest.cs" />
     <Compile Include="Sources\BindableTest.cs" />
+    <Compile Include="Sources\CommandTest.cs" />
     <Compile Include="Sources\MessengerTest.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\Resources.Designer.cs">
@@ -102,9 +111,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config">
-      <SubType>Designer</SubType>
-    </None>
+    <None Include="App.config" />
     <None Include="Packages.config" />
     <None Include="Assets\App.ico" />
     <None Include="Assets\Logo.png" />

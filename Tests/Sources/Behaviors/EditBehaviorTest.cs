@@ -16,49 +16,70 @@
 //
 /* ------------------------------------------------------------------------- */
 using Cube.Xui.Behaviors;
-using Cube.Xui.Mixin;
-using GalaSoft.MvvmLight.Command;
 using NUnit.Framework;
+using System.Threading;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CommandBehaviorTest
+    /// EditBehaviorTest
     ///
     /// <summary>
-    /// Tests for the CommandBehavior class.
+    /// Tests for the EditBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
-    class CommandBehaviorTest
+    [Apartment(ApartmentState.STA)]
+    class EditBehaviorTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties
+        /// Create
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties()
+        [TestCase(true)]
+        [TestCase(false)]
+        public void Create(bool init)
         {
-            var src = new CommandBehavior<TextBox, int>();
-            Assert.That(src.Command,          Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
+            var view = new TextBox();
+            var src  = new EditBehavior { Editing = init };
 
-            src.Command = new RelayCommand(() => { });
-            src.CommandParameter = 10;
-            Assert.That(src.Command,              Is.Not.Null);
-            Assert.That(src.Command.CanExecute(), Is.True);
-            Assert.That(src.CommandParameter,     Is.EqualTo(10));
+            src.Attach(view);
+            Assert.That(src.Editing,     Is.EqualTo(init));
+            Assert.That(view.Visibility, Is.EqualTo(Convert(src.Editing)));
+
+            src.Editing = true;
+            Assert.That(view.Visibility, Is.EqualTo(Convert(src.Editing)));
+
+            src.Editing = false;
+            Assert.That(view.Visibility, Is.EqualTo(Convert(src.Editing)));
+            src.Detach();
         }
+
+        #endregion
+
+        #region Others
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Convert
+        ///
+        /// <summary>
+        /// Converts the specified value to the corresponding Visibility.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        private Visibility Convert(bool value) => value ? Visibility.Visible : Visibility.Collapsed;
 
         #endregion
     }

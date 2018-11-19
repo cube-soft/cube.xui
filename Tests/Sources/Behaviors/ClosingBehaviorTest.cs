@@ -15,41 +15,48 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Log;
+using Cube.Xui.Behaviors;
 using NUnit.Framework;
-using System.Reflection;
+using System.Threading;
 using System.Windows;
 
-namespace Cube.Xui.Tests
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// ClosingBehaviorTest
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Tests for the ClosingBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class ClosingBehaviorTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// OneTimeSetup
+        /// Create
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [Test]
+        public void Create()
         {
-            Logger.Configure();
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
-            Logger.ObserveTaskException();
-            Application.Current.ObserveUiException();
+            var view = new Window();
+            var src  = new ClosingBehavior();
+
+            src.Attach(view);
+            Assert.That(src.Command, Is.Null);
+            src.Detach();
         }
+
+        #endregion
     }
 }

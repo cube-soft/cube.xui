@@ -15,41 +15,47 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Log;
+using Cube.Xui.Behaviors;
 using NUnit.Framework;
-using System.Reflection;
-using System.Windows;
+using System.Threading;
+using System.Windows.Controls;
 
-namespace Cube.Xui.Tests
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// GlobalSetup
+    /// SelectionBehaviorTest
     ///
     /// <summary>
-    /// NUnit で最初に実行する処理を記述するテストです。
+    /// Tests for the SelectionBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [SetUpFixture]
-    public class GlobalSetup
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class SelectionBehaviorTest
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// OneTimeSetup
+        /// Create
         ///
         /// <summary>
-        /// 一度だけ実行される初期化処理です。
+        /// Executes the test to create, attach, and detach method.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [OneTimeSetUp]
-        public void OneTimeSetup()
+        [Test]
+        public void Create() => Assert.DoesNotThrow(() =>
         {
-            Logger.Configure();
-            Logger.Info(typeof(GlobalSetup), Assembly.GetExecutingAssembly());
-            Logger.ObserveTaskException();
-            Application.Current.ObserveUiException();
-        }
+            var view = new ListView();
+            var src  = new SelectionBehavior();
+
+            src.Attach(view);
+            src.Detach();
+        });
+
+        #endregion
     }
 }

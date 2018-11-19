@@ -18,22 +18,23 @@
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
-using System.Windows;
+using System.Windows.Forms;
+using System.Windows.Forms.Integration;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehaviorTest
+    /// WindowsFormsBehaviorTest
     ///
     /// <summary>
-    /// Tests for the CloseBehavior class.
+    /// Tests for the WindowsFormsBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class CloseBehaviorTest
+    class WindowsFormsBehaviorTest
     {
         #region Tests
 
@@ -47,37 +48,40 @@ namespace Cube.Xui.Tests.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create() => Assert.DoesNotThrow(() =>
+        public void Create()
         {
-            using (var vm = new MockViewModel())
-            {
-                var view = new Window { DataContext = vm };
-                var src  = new CloseBehavior();
+            var view = new TextBox();
+            var host = new WindowsFormsHost { Child = view };
+            var src  = new WindowsFormsBehavior<TextBox>();
 
-                src.Attach(view);
-                src.Detach();
-            }
-        });
+            Assert.That(src.Source, Is.Null);
+            src.Attach(host);
+            Assert.That(src.Source, Is.EqualTo(view));
+            Assert.That(src.Parent, Is.EqualTo(host));
+            src.Detach();
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create_WithoutVM
+        /// Create_Empty
         ///
         /// <summary>
-        /// Executes the test to create, attach, and detach method without
-        /// any ViewModel objects.
+        /// Confirms the behavior the specified WindowsFormsHost object
+        /// has no children.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create_WithoutVM() => Assert.DoesNotThrow(() =>
+        public void Create_Empty()
         {
-            var view = new Window();
-            var src  = new CloseBehavior();
+            var host = new WindowsFormsHost();
+            var src  = new WindowsFormsBehavior<TextBox>();
 
-            src.Attach(view);
+            src.Attach(host);
+            Assert.That(src.Source, Is.Null);
+            Assert.That(src.Parent, Is.EqualTo(host));
             src.Detach();
-        });
+        }
 
         #endregion
     }

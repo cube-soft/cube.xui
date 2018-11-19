@@ -29,7 +29,7 @@ namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// IMessengerViewModel
+    /// IMessengerRegistrar
     ///
     /// <summary>
     /// Represents interface for communicating with a view component
@@ -37,7 +37,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public interface IMessengerViewModel
+    public interface IMessengerRegistrar
     {
         /* --------------------------------------------------------------------- */
         ///
@@ -68,7 +68,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class MessengerViewModel : ViewModelBase, IMessengerViewModel, IDisposable
+    public abstract class MessengerViewModel : ViewModelBase, IMessengerRegistrar, IDisposable
     {
         #region Constructors
 
@@ -409,9 +409,9 @@ namespace Cube.Xui
         private DialogMessage Create(string message, string title) =>
             new DialogMessage(message, title)
             {
-                Button = System.Windows.MessageBoxButton.OK,
-                Image  = System.Windows.MessageBoxImage.Error,
-                Result = System.Windows.MessageBoxResult.OK,
+                Buttons = System.Windows.MessageBoxButton.OK,
+                Image   = System.Windows.MessageBoxImage.Error,
+                Result  = System.Windows.MessageBoxResult.OK,
             };
 
         /* --------------------------------------------------------------------- */
@@ -425,8 +425,7 @@ namespace Cube.Xui
         /* --------------------------------------------------------------------- */
         private string GetTitle()
         {
-            var asm = Assembly.GetEntryAssembly() ??
-                      Assembly.GetExecutingAssembly();
+            var asm = Assembly.GetEntryAssembly() ?? Assembly.GetExecutingAssembly();
             Debug.Assert(asm != null);
             return asm.GetReader().Title;
         }

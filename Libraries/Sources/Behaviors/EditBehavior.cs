@@ -71,15 +71,7 @@ namespace Cube.Xui.Behaviors
         ///
         /* ----------------------------------------------------------------- */
         public static readonly DependencyProperty EditingProperty =
-            DependencyProperty.RegisterAttached(
-                nameof(Editing),
-                typeof(bool),
-                typeof(EditBehavior),
-                new PropertyMetadata(false, (s, e) =>
-                {
-                    if (s is EditBehavior em) em.Editing = (bool)e.NewValue;
-                })
-            );
+            DependencyFactory.Create<EditBehavior, bool>(nameof(Editing), (s, e) => s.Editing = e);
 
         #endregion
 
@@ -97,14 +89,12 @@ namespace Cube.Xui.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-            if (AssociatedObject is TextBox c)
-            {
-                if (Editing) Enable(c);
-                else Disable(c);
 
-                c.LostFocus += WhenLostFocus;
-                c.KeyDown   += WhenKeyDown;
-            }
+            if (Editing) Enable(AssociatedObject);
+            else Disable(AssociatedObject);
+
+            AssociatedObject.LostFocus += WhenLostFocus;
+            AssociatedObject.KeyDown   += WhenKeyDown;
         }
 
         /* ----------------------------------------------------------------- */
@@ -118,11 +108,8 @@ namespace Cube.Xui.Behaviors
         /* ----------------------------------------------------------------- */
         protected override void OnDetaching()
         {
-            if (AssociatedObject is TextBox c)
-            {
-                c.LostFocus -= WhenLostFocus;
-                c.KeyDown   -= WhenKeyDown;
-            }
+            AssociatedObject.LostFocus -= WhenLostFocus;
+            AssociatedObject.KeyDown   -= WhenKeyDown;
             base.OnDetaching();
         }
 
