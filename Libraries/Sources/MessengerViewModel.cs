@@ -188,7 +188,7 @@ namespace Cube.Xui
         /// <param name="message">Message object.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Send<T>(T message) => Context.Send(_ => MessengerInstance.Send(message), null);
+        protected void Send<T>(T message) => Context.Send(z => MessengerInstance.Send(message), null);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -245,7 +245,7 @@ namespace Cube.Xui
             try { action(); }
             catch (Exception err)
             {
-                this.LogWarn(err.ToString(), err);
+                this.LogWarn(err);
                 Send(Create(converter(err), title));
             }
         }
@@ -276,7 +276,7 @@ namespace Cube.Xui
         /// <param name="message">Message.</param>
         ///
         /* --------------------------------------------------------------------- */
-        protected void Post<T>(T message) => Context.Post(_ => MessengerInstance.Send(message), null);
+        protected void Post<T>(T message) => Context.Post(z => MessengerInstance.Send(message), null);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -338,7 +338,7 @@ namespace Cube.Xui
                 try { action(); }
                 catch (Exception err)
                 {
-                    this.LogWarn(err.ToString(), err);
+                    this.LogWarn(err);
                     Post(Create(converter(err), title));
                 }
             }).Forget();
