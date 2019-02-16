@@ -9,8 +9,8 @@
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <description>WPF based GUI Library.</description>
         <tags>Cube WPF</tags>
+        <license type="expression">Apache-2.0</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <licenseUrl>https://github.com/cube-soft/Cube.Xui/blob/master/License.txt</licenseUrl>
         <projectUrl>https://github.com/cube-soft/Cube.Xui</projectUrl>
         <iconUrl>https://github.com/cube-soft/Cube.Xui/blob/master/Icon.png?raw=true</iconUrl>
         <dependencies>
