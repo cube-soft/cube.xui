@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Threading;
 using System.Windows.Input;
 
 namespace Cube.Xui
@@ -30,7 +29,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class BindableElement : ObservableProperty, IDisposable
+    public class BindableElement : ObservableBase, IDisposable
     {
         #region Constructors
 
@@ -44,14 +43,14 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="gettext">Function to get text.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public BindableElement(Getter<string> gettext)
+        public BindableElement(Getter<string> gettext, IDispatcher dispatcher) : base(dispatcher)
         {
-            Context  = SynchronizationContext.Current;
             _dispose = new OnceAction<bool>(Dispose);
             _gettext = gettext;
-            _remover = Locale.Subscribe(z => RaisePropertyChanged(nameof(Text)));
+            _remover = Locale.Subscribe(e => Refresh(nameof(Text)));
         }
 
         #endregion

@@ -15,7 +15,6 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Threading;
 
 namespace Cube.Xui
 {
@@ -29,12 +28,10 @@ namespace Cube.Xui
     ///
     /// <remarks>
     /// Value プロパティを通じて実際の値にアクセスします。
-    /// PropertyChanged イベントは、コンストラクタで指定された同期
-    /// コンテキストを用いて発生します。
     /// </remarks>
     ///
     /* --------------------------------------------------------------------- */
-    public class Bindable<T> : ObservableProperty
+    public class Bindable<T> : ObservableBase
     {
         #region Constructors
 
@@ -46,8 +43,10 @@ namespace Cube.Xui
         /// Initializes a new instance of the <c>Bindable</c> class.
         /// </summary>
         ///
+        /// <param name="dispatcher">Dispatcher object.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public Bindable() : this(default(T)) { }
+        public Bindable(IDispatcher dispatcher) : this(default(T), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -59,9 +58,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="value">Initial value.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(T value) : this(new Accessor<T>(value)) { }
+        public Bindable(T value, IDispatcher dispatcher) :
+            this(new Accessor<T>(value), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -73,9 +74,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="getter">Function to get the value.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Getter<T> getter) : this(new Accessor<T>(getter)) { }
+        public Bindable(Getter<T> getter, IDispatcher dispatcher) :
+            this(new Accessor<T>(getter), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -88,10 +91,11 @@ namespace Cube.Xui
         ///
         /// <param name="getter">Function to get the value.</param>
         /// <param name="setter">Function to set the value.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Getter<T> getter, Setter<T> setter) :
-            this(new Accessor<T>(getter, setter)) { }
+        public Bindable(Getter<T> getter, Setter<T> setter, IDispatcher dispatcher) :
+            this(new Accessor<T>(getter, setter), dispatcher) { }
 
         /* ----------------------------------------------------------------- */
         ///
@@ -103,11 +107,11 @@ namespace Cube.Xui
         /// </summary>
         ///
         /// <param name="accessor">Function to get and set value.</param>
+        /// <param name="dispatcher">Dispatcher object.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public Bindable(Accessor<T> accessor)
+        public Bindable(Accessor<T> accessor, IDispatcher dispatcher) : base(dispatcher)
         {
-            Context   = SynchronizationContext.Current;
             _accessor = accessor;
         }
 
@@ -127,8 +131,23 @@ namespace Cube.Xui
         public T Value
         {
             get => _accessor.Get();
-            set { if (_accessor.Set(value)) RaisePropertyChanged(nameof(Value)); }
+            set { if (_accessor.Set(value)) Refresh(nameof(Value)); }
         }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Refresh
+        ///
+        /// <summary>
+        /// Raises a PropertyChanged event against the Value property.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Refresh() => Refresh(nameof(Value));
 
         #endregion
 
