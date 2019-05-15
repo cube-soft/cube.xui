@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using NUnit.Framework;
-using System;
 
 namespace Cube.Xui.Tests
 {
@@ -56,7 +55,7 @@ namespace Cube.Xui.Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Set_Throws
+        /// Set_InvalidOperationException
         ///
         /// <summary>
         /// Confirms the behavior when setting value without any setter
@@ -65,12 +64,12 @@ namespace Cube.Xui.Tests
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Set_Throws()
+        public void Set_InvalidOperationException()
         {
             var src = new Bindable<int>(() => 8, Dispatcher.Vanilla);
 
             Assert.That(src.Value, Is.EqualTo(8));
-            Assert.That(() => src.Value = 7, Throws.TypeOf<InvalidOperationException>());
+            Assert.That(() => src.Value = 7, Throws.InvalidOperationException);
         }
 
         /* ----------------------------------------------------------------- */
