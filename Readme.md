@@ -19,9 +19,13 @@ Or select it from the NuGet packages UI on Visual Studio.
 
 ## Dependencies
 
-* [Cube.Core](https://github.com/cube-soft/Cube.Core)
-* [Cube.FileSystem](https://github.com/cube-soft/Cube.FileSystem)
+Cube.Xui depends on the [Microsoft Expression Blend SDK](https://www.microsoft.com/ja-jp/download/details.aspx?id=10801).
+Note that we will migrate to the [Microsoft.Xaml.Behaviors.Wpf](https://www.nuget.org/packages/Microsoft.Xaml.Behaviors.Wpf/) in the future, which is the [OSS project](https://github.com/Microsoft/XamlBehaviorsWpf) of the Expression Blend SDK.
+
+## Thanks
+
 * [MVVM Light Toolkit](https://github.com/lbugnion/mvvmlight)
+* [Prism](https://github.com/PrismLibrary/Prism)
 
 ## Contributing
 

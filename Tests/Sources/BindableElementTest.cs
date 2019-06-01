@@ -15,7 +15,7 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using GalaSoft.MvvmLight.Command;
+using Cube.Xui.Commands;
 using NUnit.Framework;
 using System;
 
@@ -70,11 +70,12 @@ namespace Cube.Xui.Tests
         {
             using (var src = new BindableElement<string>(() => "Text", () => "Get", Dispatcher.Vanilla))
             {
-                Assert.That(src.Text,    Is.EqualTo("Text"));
-                Assert.That(src.Value,   Is.EqualTo("Get"));
-                Assert.That(src.Command, Is.Null);
+                Assert.That(src.Text,  Is.EqualTo("Text"));
+                Assert.That(src.Value, Is.EqualTo("Get"));
                 Assert.That(() => src.Value = "Dummy", Throws.TypeOf<InvalidOperationException>());
-                Assert.DoesNotThrow(() => src.Command = new RelayCommand(() => { }));
+                Assert.That(src.Command, Is.Null);
+                src.Command = new DelegateCommand(() => { });
+                Assert.That(src.Command, Is.Not.Null);
             }
         }
 
