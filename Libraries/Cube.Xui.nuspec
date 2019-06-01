@@ -14,8 +14,14 @@
         <iconUrl>https://github.com/cube-soft/Cube.Xui/blob/master/Icon.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
-            <dependency id="Cube.FileSystem" version="1.16.0" />
-            <dependency id="MvvmLightLibs" version="5.4.1.1" />
+            <group targetFramework="net45">
+                <dependency id="Cube.FileSystem" version="1.16.0" />
+                <dependency id="Expression.Blend.Sdk" version="1.0.2" />
+            </group>
+            <group targetFramework="net35">
+                <dependency id="Cube.FileSystem" version="1.16.0" />
+                <dependency id="Expression.Blend.Sdk3" version="1.0.1340.1" />
+            </group>
         </dependencies>
     </metadata>
     <files>
