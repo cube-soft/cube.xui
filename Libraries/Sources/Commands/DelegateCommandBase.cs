@@ -16,8 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Windows.Input;
 
 namespace Cube.Xui
@@ -31,7 +29,7 @@ namespace Cube.Xui
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class DelegateCommandBase : DisposableBase, ICommand
+    public abstract class DelegateCommandBase : ObserverBase, ICommand
     {
         #region Constructors
 
@@ -91,10 +89,10 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnCanExecute
+        /// Execute
         ///
         /// <summary>
-        /// Determines whether the command can execute in its current state.
+        /// Defines the method to be called when the command is invoked.
         /// </summary>
         ///
         /// <param name="parameter">
@@ -103,7 +101,24 @@ namespace Cube.Xui
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        protected abstract bool OnCanExecute(object parameter);
+        public void Execute(object parameter) => OnExecute(parameter);
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// CanExecute
+        ///
+        /// <summary>
+        /// Defines the method that determines whether the command can
+        /// execute in its current state.
+        /// </summary>
+        ///
+        /// <param name="parameter">
+        /// Data used by the command. If the command does not require data
+        /// to be passed, this object can be set to null.
+        /// </param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public bool CanExecute(object parameter) => OnCanExecute(parameter);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -123,59 +138,10 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnObserve
+        /// OnCanExecute
         ///
         /// <summary>
-        /// Observes the PropertyChanged event of the specified object.
-        /// </summary>
-        ///
-        /// <param name="src">Observed object.</param>
-        /// <param name="names">Target property names.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected void OnObserve(INotifyPropertyChanged src, params string[] names)
-        {
-            var set = new HashSet<string>(names);
-            void handler(object s, PropertyChangedEventArgs e)
-            {
-                if (set.Count <= 0 || set.Contains(e.PropertyName)) Refresh();
-            }
-
-            src.PropertyChanged += handler;
-            _observer.Add(Disposable.Create(() => src.PropertyChanged -= handler));
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Dispose
-        ///
-        /// <summary>
-        /// Releases the unmanaged resources used by the object and
-        /// optionally releases the managed resources.
-        /// </summary>
-        ///
-        /// <param name="disposing">
-        /// true to release both managed and unmanaged resources;
-        /// false to release only unmanaged resources.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void Dispose(bool disposing)
-        {
-            if (!disposing) return;
-            foreach (var obj in _observer) obj.Dispose();
-            _observer.Clear();
-        }
-
-        #region ICommand
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// CanExecute
-        ///
-        /// <summary>
-        /// Defines the method that determines whether the command can
-        /// execute in its current state.
+        /// Determines whether the command can execute in its current state.
         /// </summary>
         ///
         /// <param name="parameter">
@@ -184,30 +150,19 @@ namespace Cube.Xui
         /// </param>
         ///
         /* ----------------------------------------------------------------- */
-        bool ICommand.CanExecute(object parameter) => OnCanExecute(parameter);
+        protected abstract bool OnCanExecute(object parameter);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Execute
+        /// React
         ///
         /// <summary>
-        /// Defines the method to be called when the command is invoked.
+        /// Invokes when any states are changed.
         /// </summary>
         ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
         /* ----------------------------------------------------------------- */
-        void ICommand.Execute(object parameter) => OnExecute(parameter);
+        protected override void React() => Refresh();
 
-        #endregion
-
-        #endregion
-
-        #region Fields
-        private readonly IList<IDisposable> _observer = new List<IDisposable>();
         #endregion
     }
 }

@@ -91,7 +91,7 @@ namespace Cube.Xui
         /// Value
         ///
         /// <summary>
-        /// Gets or sets the value.
+        /// Gets or sets a value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
@@ -99,6 +99,25 @@ namespace Cube.Xui
         {
             get => _accessor.Get();
             set { if (_accessor.Set(value)) Refresh(nameof(Value)); }
+        }
+
+        #endregion
+
+        #region Methods
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// React
+        ///
+        /// <summary>
+        /// Occurs when any states are changed.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        protected override void React()
+        {
+            base.React();
+            Refresh(nameof(Value));
         }
 
         #endregion

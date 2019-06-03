@@ -16,7 +16,6 @@
 //
 /* ------------------------------------------------------------------------- */
 using System;
-using System.ComponentModel;
 
 namespace Cube.Xui
 {
@@ -80,50 +79,16 @@ namespace Cube.Xui
 
         /* ----------------------------------------------------------------- */
         ///
-        /// CanExecute
-        ///
-        /// <summary>
-        /// Determines whether the command can execute in its current state.
-        /// </summary>
-        ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
-        ///
-        /* ----------------------------------------------------------------- */
-        public bool CanExecute(T parameter) => _canExecute(parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Execute
+        /// OnExecute
         ///
         /// <summary>
         /// Executes the command.
         /// </summary>
         ///
-        /// <param name="parameter">
-        /// Data used by the command. If the command does not require data
-        /// to be passed, this object can be set to null.
-        /// </param>
+        /// <param name="parameter">Data used by the command.</param>
         ///
         /* ----------------------------------------------------------------- */
-        public void Execute(T parameter) => _execute(parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Observe
-        ///
-        /// <summary>
-        /// Observes the PropertyChanged event of the specified object.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public DelegateCommand<T> Observe(INotifyPropertyChanged src, params string[] names)
-        {
-            OnObserve(src, names);
-            return this;
-        }
+        protected override void OnExecute(object parameter) => _execute((T)parameter);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -133,23 +98,10 @@ namespace Cube.Xui
         /// Determines whether the command can execute in its current state.
         /// </summary>
         ///
-        /// <param name="parameter">Not used parameter.</param>
+        /// <param name="parameter">Data used by the command.</param>
         ///
         /* ----------------------------------------------------------------- */
-        protected override bool OnCanExecute(object parameter) => CanExecute((T)parameter);
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnExecute
-        ///
-        /// <summary>
-        /// Executes the command.
-        /// </summary>
-        ///
-        /// <param name="parameter">Not used parameter.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnExecute(object parameter) => Execute((T)parameter);
+        protected override bool OnCanExecute(object parameter) => _canExecute((T)parameter);
 
         #endregion
 
