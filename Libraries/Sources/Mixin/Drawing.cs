@@ -15,70 +15,73 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Windows;
-using System.Windows.Interactivity;
+using Cube.FileSystem;
+using System.IO;
+using System.Windows.Media.Imaging;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Mixin.Drawing
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposeBehavior
+    /// XuiExtension
     ///
     /// <summary>
-    /// Provides functionality to dispose the DataContext when the
-    /// Closed event is fired.
+    /// Provides the extended method of the Image class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class DisposeBehavior : Behavior<Window>
+    public static class XuiExtension
     {
-        /* ----------------------------------------------------------------- */
-        ///
-        /// OnAttached
-        ///
-        /// <summary>
-        /// Occurs when the instance is attached to the Window.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected override void OnAttached()
-        {
-            base.OnAttached();
-            AssociatedObject.Closed -= OnClosed;
-            AssociatedObject.Closed += OnClosed;
-        }
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnDetaching
+        /// ToBitmapImage
         ///
         /// <summary>
-        /// Occurs when the instance is detaching from the Window.
+        /// Converts to the BitmapImage object.
         /// </summary>
         ///
+        /// <param name="src">Image object.</param>
+        ///
+        /// <returns>BitmapImage object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        protected override void OnDetaching()
-        {
-            AssociatedObject.Closing -= OnClosed;
-            base.OnDetaching();
-        }
+        public static BitmapImage ToBitmapImage(this System.Drawing.Image src) =>
+            src.ToBitmapImage(false);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// OnClosed
+        /// ToBitmapImage
         ///
         /// <summary>
-        /// Occurs when the Closed event is fired.
+        /// Converts to the BitmapImage object.
         /// </summary>
         ///
+        /// <param name="src">Image object.</param>
+        /// <param name="dispose">Whether disposing the source.</param>
+        ///
+        /// <returns>BitmapImage object.</returns>
+        ///
         /* ----------------------------------------------------------------- */
-        private void OnClosed(object s, EventArgs e)
+        public static BitmapImage ToBitmapImage(this System.Drawing.Image src, bool dispose)
         {
-            if (AssociatedObject == null) return;
-            var dc = AssociatedObject.DataContext as IDisposable;
-            AssociatedObject.DataContext = DependencyProperty.UnsetValue;
-            dc?.Dispose();
+            if (src == null) return default;
+
+            using (var ss = new StreamProxy(new MemoryStream()))
+            {
+                src.Save(ss, System.Drawing.Imaging.ImageFormat.Png);
+                var dest = new BitmapImage();
+                dest.BeginInit();
+                dest.CacheOption = BitmapCacheOption.OnLoad;
+                dest.StreamSource = ss;
+                dest.EndInit();
+                if (dest.CanFreeze) dest.Freeze();
+                if (dispose) src.Dispose();
+                return dest;
+            }
         }
+
+        #endregion
     }
 }
