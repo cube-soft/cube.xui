@@ -15,48 +15,30 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Xui.Behaviors;
-using NUnit.Framework;
-using System.Threading;
 using System.Windows;
 
-namespace Cube.Xui.Tests.Behaviors
+namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// ClosingToCommandTest
+    /// MockWindow
     ///
     /// <summary>
-    /// Tests the ClosingToCommand class.
+    /// Represents a window for testing.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class ClosingToCommandTest
+    public partial class MockWindow : Window
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// MockWindow
         ///
         /// <summary>
-        /// Executes the test to create, attach, and detach method.
+        /// Initializes a new instance of the MockWindow class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create()
-        {
-            var view = new Window();
-            var src  = new ClosingToCommand();
-
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            src.Detach();
-        }
-
-        #endregion
+        public MockWindow() { InitializeComponent(); }
     }
 }

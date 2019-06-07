@@ -15,108 +15,107 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Mixin.Iteration;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading;
-using System.Windows.Controls;
+using System.Windows;
+using System.Windows.Interactivity;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CheckedToCommandTest
+    /// EventToCommandTest
     ///
     /// <summary>
-    /// Tests the CheckedToCommand class.
+    /// Tests event to command behaviors.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class CheckedToCommandTest
+    class EventToCommandTest
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_Checked
+        /// Show
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Tests the ShownToCommand class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_Checked()
+        public void Show()
         {
-            var view = new CheckBox();
-            var src  = new CheckedToCommand();
+            var count = 0;
+            var view  = new MockWindow();
+            var src   = Attach(view, new ShownToCommand
+            {
+                Command = new DelegateCommand(() =>
+                {
+                    ++count;
+                    view.Close();
+                })
+            });
 
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
+            view.ShowDialog();
             src.Detach();
+            Assert.That(count, Is.EqualTo(1));
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_Unchecked
+        /// Close
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Tests the ClosingToCommand and ClosedToCommand classes.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Properties_Unchecked()
+        public void Close()
         {
-            var view = new CheckBox();
-            var src  = new UncheckedToCommand();
+            var closing = 0;
+            var closed  = 0;
 
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            src.Detach();
+            var view = new MockWindow();
+            var src  = new List<CommandBehavior<Window>>
+            {
+                Attach(view, new ClosedToCommand  { Command = new DelegateCommand(() => ++closed) }),
+                Attach(view, new ClosingToCommand { Command = new DelegateCommand<CancelEventArgs>(e => e.Cancel = ++closing % 2 == 1) })
+            };
+
+            view.Show();
+            2.Times(i => view.Close());
+            foreach (var obj in src) obj.Detach();
+
+            Assert.That(closing, Is.EqualTo(2));
+            Assert.That(closed,  Is.EqualTo(1));
         }
 
+        #endregion
+
+        #region Others
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Properties_NonNullable
+        /// Attach
         ///
         /// <summary>
-        /// Confirms default values of properties.
+        /// Attaches the specified view and behavior object.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties_NonNullable()
+        private T Attach<T>(Window view, T src) where T : Behavior<Window>
         {
-            var view = new RadioButton();
-            var src  = new CheckedToCommand<int>();
-
             src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            Assert.That(src.CommandParameter, Is.EqualTo(0));
-            src.Detach();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Properties_Nullable
-        ///
-        /// <summary>
-        /// Confirms default values of properties.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Properties_Nullable()
-        {
-            var view = new RadioButton();
-            var src  = new UncheckedToCommand<string>();
-
-            src.Attach(view);
-            Assert.That(src.Command, Is.Null);
-            Assert.That(src.CommandParameter, Is.Null);
-            src.Detach();
+            return src;
         }
 
         #endregion
