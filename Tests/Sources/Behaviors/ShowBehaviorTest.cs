@@ -15,33 +15,50 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
+using System.Threading;
 
-namespace Cube.Xui.Behaviors
+namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// UpdateSourcesBehavior
+    /// ShowBehaviorTest
     ///
     /// <summary>
-    /// Represents the behavior when an UpdateSourcesMessage is received.
+    /// Tests the ShowBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public class UpdateSourcesBehavior : MessageBehavior<UpdateSourcesMessage>
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class ShowBehaviorTest : ViewFixture
     {
+        #region Tests
+
         /* ----------------------------------------------------------------- */
         ///
-        /// Invoke
+        /// Create
         ///
         /// <summary>
-        /// Invokes the action.
+        /// Tests the create, attach, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(UpdateSourcesMessage e)
+        [Test]
+        public void Create()
         {
-            if (AssociatedObject is Window w) w.BindingGroup.UpdateSources();
+            var view = Hack(new MockWindow());
+            var src  = Attach(view, new ShowBehavior<MockWindow, MockViewModel>());
+
+            Assert.That(src.Modal, Is.False);
+            src.Modal = true;
+            src.Modal = true;
+            Assert.That(src.Modal, Is.True);
+
+            src.Detach();
         }
+
+        #endregion
     }
 }

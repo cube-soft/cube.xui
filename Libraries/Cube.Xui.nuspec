@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>1.16.0</version>
+        <version>1.17.0</version>
         <id>Cube.Xui</id>
         <title>Cube.Xui</title>
         <authors>clown,cube-soft</authors>
         <owners>clown,cube-soft</owners>
-        <description>WPF based GUI Library.</description>
+        <description>WPF based MVVM library available for .NET Framework 3.5, 4.5, or later.</description>
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <tags>Cube WPF MVVM Binding Behavior</tags>
         <license type="expression">Apache-2.0</license>
@@ -15,11 +15,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net45">
-                <dependency id="Cube.FileSystem" version="1.16.0" />
+                <dependency id="Cube.FileSystem" version="1.17.0" />
                 <dependency id="Expression.Blend.Sdk" version="1.0.2" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.FileSystem" version="1.16.0" />
+                <dependency id="Cube.FileSystem" version="1.17.0" />
                 <dependency id="Expression.Blend.Sdk3" version="1.0.1340.1" />
             </group>
         </dependencies>

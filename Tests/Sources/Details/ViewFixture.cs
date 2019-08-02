@@ -15,61 +15,59 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.DataContract;
-using Cube.Xui.Converters;
-using NUnit.Framework;
+using System.Windows;
+using System.Windows.Interactivity;
 
-namespace Cube.Xui.Tests.Converters
+namespace Cube.Xui.Tests
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// StringConverterTest
+    /// ViewFixture
     ///
     /// <summary>
-    /// Tests the string related converter classes.
+    /// Provides functionality to test with a mock window.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    class StringConverterTest : ConvertHelper
+    abstract class ViewFixture
     {
-        #region UpperCase
+        #region Methods
 
         /* ----------------------------------------------------------------- */
         ///
-        /// UpperCase
+        /// Attach
         ///
         /// <summary>
-        /// Tests the UpperCase class.
+        /// Attaches the specified view and behavior object.
         /// </summary>
         ///
+        /// <param name="src">Window to be attached.</param>
+        /// <param name="behavior">Source behavior.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Hello", ExpectedResult = "HELLO")]
-        [TestCase("Ｂｙｅ", ExpectedResult = "ＢＹＥ")]
-        [TestCase("Hello 日本", ExpectedResult = "HELLO 日本")]
-        [TestCase(Format.Json, ExpectedResult = "JSON")]
-        [TestCase(null, ExpectedResult = "")]
-        public string UpperCase(object src) => Convert<string>(new UpperCase(), src);
-
-        #endregion
-
-        #region LowerCase
+        protected T Attach<T>(Window src, T behavior) where T : Behavior
+        {
+            behavior.Attach(src);
+            return behavior;
+        }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// LowerCase
+        /// Hack
         ///
         /// <summary>
-        /// Tests the LowerCase class.
+        /// Sets properties of the Window class for testing.
         /// </summary>
         ///
+        /// <param name="src">Window to be hacked.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        [TestCase("Hello", ExpectedResult = "hello")]
-        [TestCase("Ｂｙｅ", ExpectedResult = "ｂｙｅ")]
-        [TestCase("Hello 日本", ExpectedResult = "hello 日本")]
-        [TestCase(Format.Json, ExpectedResult = "json")]
-        [TestCase(null, ExpectedResult = "")]
-        public string LowerCase(object src) => Convert<string>(new LowerCase(), src);
+        protected T Hack<T>(T src) where T : Window
+        {
+            src.Top = SystemParameters.PrimaryScreenHeight + 10;
+            src.ShowInTaskbar = false;
+            return src;
+        }
 
         #endregion
     }

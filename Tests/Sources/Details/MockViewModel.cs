@@ -15,51 +15,52 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using System.Threading;
+
 namespace Cube.Xui.Tests
 {
     /* ----------------------------------------------------------------- */
     ///
-    /// Person
+    /// MockViewModel
     ///
     /// <summary>
-    /// Represents the dummy data for testing.
+    /// Represents the ViewModel of the MockWindow class.
     /// </summary>
     ///
     /* ----------------------------------------------------------------- */
-    class Person : SerializableBase
+    class MockViewModel : Presentable<Person>
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Name
+        /// MockViewModel
         ///
         /// <summary>
-        /// Gets or sets the name.
+        /// Initializes a new instance of the MockViewModel class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name
-        {
-            get => GetProperty<string>();
-            set => SetProperty(value);
-        }
+        public MockViewModel() : base(new Person(), new Aggregator(), new SynchronizationContext()) { }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Age
+        /// Value
         ///
         /// <summary>
-        /// Gets or sets the age.
+        /// Gets the bindable value.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Age
-        {
-            get => GetProperty<int>();
-            set => SetProperty(value);
-        }
+        public Person Value => Facade;
 
-        #endregion
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Test
+        ///
+        /// <summary>
+        /// Sends the specified message for testing.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public void Test<T>(T msg) => Send(msg);
     }
 }

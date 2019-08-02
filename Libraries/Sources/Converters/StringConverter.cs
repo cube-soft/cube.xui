@@ -15,34 +15,59 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System.Windows;
-
-namespace Cube.Xui.Tests
+namespace Cube.Xui.Converters
 {
+    #region UpperCase
+
     /* --------------------------------------------------------------------- */
     ///
-    /// MockHelper
+    /// UpperCase
     ///
     /// <summary>
-    /// Provides functionality to test with a mock window.
+    /// Provides functionality to convert to upper case.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    static class MockHelper
+    public class UpperCase : SimplexConverter
     {
         /* ----------------------------------------------------------------- */
         ///
-        /// Hack
+        /// UpperCase
         ///
         /// <summary>
-        /// Sets properties for testing.
+        /// Initializes a new instance of the UpperCase class.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public static void Hack(this Window src)
-        {
-            src.Top = SystemParameters.PrimaryScreenHeight + 10;
-            src.ShowInTaskbar = false;
-        }
+        public UpperCase() : base((e, t, p, c) => e?.ToString()?.ToUpper(c) ?? string.Empty) { }
     }
+
+    #endregion
+
+    #region LowerCase
+
+    /* --------------------------------------------------------------------- */
+    ///
+    /// LowerCase
+    ///
+    /// <summary>
+    /// Provides functionality to convert to lower case.
+    /// </summary>
+    ///
+    /* --------------------------------------------------------------------- */
+    public class LowerCase : SimplexConverter
+    {
+        /* ----------------------------------------------------------------- */
+        ///
+        /// LowerCase
+        ///
+        /// <summary>
+        /// Initializes a new instance of the LowerCase class.
+        /// </summary>
+        ///
+        /* ----------------------------------------------------------------- */
+        public LowerCase() : base((e, t, p, c) => e?.ToString()?.ToLower(c) ?? string.Empty) { }
+    }
+
+    #endregion
 }

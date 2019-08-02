@@ -15,58 +15,34 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using System;
-using System.Globalization;
-using System.Windows.Data;
-using System.Windows.Markup;
+using Cube.Mixin.Logging;
+using System.Diagnostics;
 
-namespace Cube.Xui.Converters
+namespace Cube.Xui
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// SimplexConverter
+    /// BindingLogger
     ///
     /// <summary>
-    /// Provides functionality to convert from the provided arguments.
-    /// The class throws the NotSupportedException if the ConvertBack
-    /// method is invoked.
+    /// Provides functionality to output the binding errors.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    public abstract class SimplexConverter : MarkupExtension, IValueConverter
+    public sealed class BindingLogger : TraceListener
     {
         #region Constructors
 
         /* ----------------------------------------------------------------- */
         ///
-        /// SimplexConverter
+        /// BindingLogger
         ///
         /// <summary>
-        /// Initializes a new instance of the SimplexConverter class with
-        /// the specified function.
+        /// Initializes a new instance of the BindingLogger class.
         /// </summary>
         ///
-        /// <param name="func">Function to convert.</param>
-        ///
         /* ----------------------------------------------------------------- */
-        protected SimplexConverter(Func<object, object> func) : this((e, t, p, c) => func(e)) { }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// SimplexConverter
-        ///
-        /// <summary>
-        /// Initializes a new instance of the SimplexConverter with the
-        /// specified function.
-        /// </summary>
-        ///
-        /// <param name="func">Function to convert.</param>
-        ///
-        /* ----------------------------------------------------------------- */
-        protected SimplexConverter(Func<object, Type, object, CultureInfo, object> func)
-        {
-            _func = func;
-        }
+        private BindingLogger() { }
 
         #endregion
 
@@ -74,43 +50,62 @@ namespace Cube.Xui.Converters
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Convert
+        /// Configure
         ///
         /// <summary>
-        /// Invokes the conversion.
+        /// Configures the log settings.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public object Convert(object value, Type target, object parameter, CultureInfo culture) =>
-            _func(value, target, parameter, culture);
+        public static void Configure() => _once.Invoke(_core);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ConvertBack
+        /// WriteLine
         ///
         /// <summary>
-        /// The class does not support the method.
+        /// Writes a message to the debugging logger.
         /// </summary>
         ///
+        /// <param name="message">Message to write.</param>
+        ///
         /* ----------------------------------------------------------------- */
-        public object ConvertBack(object value, Type target, object parameter, CultureInfo culture) =>
-            throw new NotSupportedException();
+        public override void WriteLine(string message) => this.LogDebug(message);
 
         /* ----------------------------------------------------------------- */
         ///
-        /// ProvideValue
+        /// Write
         ///
         /// <summary>
-        /// Returns the self object.
+        /// Writes a message to the debugging logger.
+        /// </summary>
+        ///
+        /// <param name="message">Message to write.</param>
+        ///
+        /* ----------------------------------------------------------------- */
+        public override void Write(string message) { }
+
+        #endregion
+
+        #region Implementations
+
+        /* ----------------------------------------------------------------- */
+        ///
+        /// Register
+        ///
+        /// <summary>
+        /// Registers the binding logger source.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public override object ProvideValue(IServiceProvider serviceProvider) => this;
+        private static void Register(BindingLogger src) =>
+            PresentationTraceSources.DataBindingSource.Listeners.Add(src);
 
         #endregion
 
         #region Fields
-        private readonly Func<object, Type, object, CultureInfo, object> _func;
+        private static readonly BindingLogger _core = new BindingLogger();
+        private static readonly OnceAction<BindingLogger> _once = new OnceAction<BindingLogger>(Register);
         #endregion
     }
 }

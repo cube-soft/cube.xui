@@ -15,49 +15,33 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-using Cube.Tests;
-using NUnit.Framework;
-using System.Threading;
+using System.Windows;
 
-namespace Cube.Xui.Tests.Behaviors
+namespace Cube.Xui.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// CloseBehaviorTest
+    /// ApplyBehavior
     ///
     /// <summary>
-    /// Tests for the CloseBehavior class.
+    /// Represents the behavior when an ApplyMessage is received.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
-    [TestFixture]
-    [Apartment(ApartmentState.STA)]
-    class CloseBehaviorTest : ViewFixture
+    public class ApplyBehavior : MessageBehavior<ApplyMessage>
     {
-        #region Tests
-
         /* ----------------------------------------------------------------- */
         ///
         /// Invoke
         ///
         /// <summary>
-        /// Tests the create, attach, send, and detach methods.
+        /// Invokes the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        [Test]
-        public void Invoke()
+        protected override void Invoke(ApplyMessage e)
         {
-            var cts  = new CancellationTokenSource();
-            var view = Hack(new MockWindow());
-            var vm   = (MockViewModel)view.DataContext;
-
-            view.Show();
-            view.Closed += (s, e) => cts.Cancel();
-            vm.Test(new CloseMessage());
-            Assert.That(Wait.For(cts.Token), "Timeout");
+            if (AssociatedObject is Window w) _ = w.BindingGroup.UpdateSources();
         }
-
-        #endregion
     }
 }

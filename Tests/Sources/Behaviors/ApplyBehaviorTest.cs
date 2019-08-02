@@ -15,75 +15,49 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
+using Cube.Tests;
 using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
-using System.Windows;
+using System.Windows.Controls;
 
 namespace Cube.Xui.Tests.Behaviors
 {
     /* --------------------------------------------------------------------- */
     ///
-    /// DisposeBehaviorTest
+    /// ApplyBehaviorTest
     ///
     /// <summary>
-    /// Tests the DisposeBehavior class.
+    /// Tests the ApplyBehavior class.
     /// </summary>
     ///
     /* --------------------------------------------------------------------- */
     [TestFixture]
     [Apartment(ApartmentState.STA)]
-    class DisposeBehaviorTest : ViewFixture
+    class ApplyBehaviorTest : ViewFixture
     {
         #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Create
+        /// Invoke
         ///
         /// <summary>
-        /// Tests the create, attach, and detach methods.
+        /// Tests the create, attach, send, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
         [Test]
-        public void Create()
+        public void Invoke()
         {
-            var n    = 0;
-            var view = Hack(new Window());
-            var src  = Attach(view, new DisposeBehavior());
+            var view = Hack(new MockWindow());
+            var vm   = (MockViewModel)view.DataContext;
+            var src  = Attach(view, new ApplyBehavior());
 
-            view.DataContext = Disposable.Create(() => ++n);
-            view.Show();
-            view.Close();
-
-            Assert.That(n, Is.EqualTo(1));
-            Assert.That(view.DataContext, Is.Not.Null);
-
-            src.Detach();
-        }
-
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Create_Null
-        ///
-        /// <summary>
-        /// Tests the create, attach, and detach methods in the case when
-        /// DataContext is null.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        [Test]
-        public void Create_Null()
-        {
-            var view = Hack(new Window());
-            var src  = Attach(view, new DisposeBehavior());
-
-            Assert.That(view.DataContext, Is.Null);
-
-            view.Show();
-            view.Close();
-            src.Detach();
+            ((TextBox)view.FindName("TestName")).Text = "OK";
+            Assert.That(vm.Value.Name, Is.Null);
+            vm.Test(new ApplyMessage());
+            Assert.That(Wait.For(() => vm.Value.Name.Equals("OK")), "Timeout");
         }
 
         #endregion
