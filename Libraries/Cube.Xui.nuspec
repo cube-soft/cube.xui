@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>1.17.0</version>
+        <version>1.18.0</version>
         <id>Cube.Xui</id>
         <title>Cube.Xui</title>
         <authors>clown,cube-soft</authors>
@@ -15,11 +15,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net45">
-                <dependency id="Cube.FileSystem" version="1.17.0" />
+                <dependency id="Cube.FileSystem" version="1.18.0" />
                 <dependency id="Expression.Blend.Sdk" version="1.0.2" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.FileSystem" version="1.17.0" />
+                <dependency id="Cube.FileSystem" version="1.18.0" />
                 <dependency id="Expression.Blend.Sdk3" version="1.0.1340.1" />
             </group>
         </dependencies>
