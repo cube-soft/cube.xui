@@ -9,9 +9,9 @@
         <description>WPF based MVVM library available for .NET Framework 3.5, 4.5, or later.</description>
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <tags>Cube WPF MVVM Binding Behavior</tags>
+        <icon>images\Icon.png</icon>
         <license type="expression">Apache-2.0</license>
         <projectUrl>https://github.com/cube-soft/Cube.Xui</projectUrl>
-        <iconUrl>https://github.com/cube-soft/Cube.Xui/blob/master/Icon.png?raw=true</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net45">
@@ -25,6 +25,7 @@
         </dependencies>
     </metadata>
     <files>
+        <file src="..\Icon.png" target="images" />
         <file src="bin\Any CPU\Release\net45\Cube.Xui.*" target="lib\net45" />
         <file src="bin\Any CPU\Release\net35\Cube.Xui.*" target="lib\net35" />
     </files>
