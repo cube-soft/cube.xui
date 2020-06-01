@@ -21,7 +21,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Threading;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Cube.Xui.Tests.Behaviors
 {

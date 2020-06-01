@@ -19,7 +19,7 @@ using Cube.Xui.Behaviors;
 using NUnit.Framework;
 using System.Threading;
 using System.Windows;
-using System.Windows.Interactivity;
+using Microsoft.Xaml.Behaviors;
 
 namespace Cube.Xui.Tests.Behaviors
 {
