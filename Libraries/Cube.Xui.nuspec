@@ -6,7 +6,7 @@
         <title>Cube.Xui</title>
         <authors>clown,cube-soft</authors>
         <owners>clown,cube-soft</owners>
-        <description>WPF based MVVM library available for .NET Framework 3.5, 4.5, or later.</description>
+        <description>Support the MVVM pattern in WPF applications.</description>
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <tags>Cube WPF MVVM Binding Behavior</tags>
         <icon>images\Icon.png</icon>
