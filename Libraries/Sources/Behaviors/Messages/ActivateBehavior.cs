@@ -15,51 +15,55 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Tests
+using System.Windows;
+
+namespace Cube.Xui.Behaviors
 {
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
-    /// Person
+    /// ActivateBehavior
     ///
     /// <summary>
-    /// Represents the dummy data for testing.
+    /// Represents the behavior when an ActivateMessage is received.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    class Person : SerializableBase
+    /* --------------------------------------------------------------------- */
+    public class ActivateBehavior : MessageBehavior<ActivateMessage>
     {
-        #region Properties
-
         /* ----------------------------------------------------------------- */
         ///
-        /// Name
+        /// Invoke
         ///
         /// <summary>
-        /// Gets or sets the name.
+        /// Invokes the action.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name
+        protected override void Invoke(ActivateMessage e)
         {
-            get => Get<string>();
-            set => Set(value);
+            if (AssociatedObject is Window w)
+            {
+                if (w.WindowState == WindowState.Minimized) w.WindowState = WindowState.Normal;
+                _ = w.Activate();
+                ResetTopMost(w);
+            }
         }
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Age
+        /// ResetTopMost
         ///
         /// <summary>
-        /// Gets or sets the age.
+        /// Resets the value of Topmost property.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public int Age
+        private void ResetTopMost(Window src)
         {
-            get => Get<int>();
-            set => Set(value);
+            var current = src.Topmost;
+            src.Topmost = false;
+            src.Topmost = true;
+            src.Topmost = current;
         }
-
-        #endregion
     }
 }

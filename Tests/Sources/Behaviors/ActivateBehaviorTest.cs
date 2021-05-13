@@ -15,49 +15,45 @@
 // limitations under the License.
 //
 /* ------------------------------------------------------------------------- */
-namespace Cube.Xui.Tests
+using System.Threading;
+using Cube.Xui.Behaviors;
+using NUnit.Framework;
+
+namespace Cube.Xui.Tests.Behaviors
 {
-    /* ----------------------------------------------------------------- */
+    /* --------------------------------------------------------------------- */
     ///
-    /// Person
+    /// ActivateBehaviorTest
     ///
     /// <summary>
-    /// Represents the dummy data for testing.
+    /// Tests the ActivateBehavior class.
     /// </summary>
     ///
-    /* ----------------------------------------------------------------- */
-    class Person : SerializableBase
+    /* --------------------------------------------------------------------- */
+    [TestFixture]
+    [Apartment(ApartmentState.STA)]
+    class ActivateBehaviorTest : ViewFixture
     {
-        #region Properties
+        #region Tests
 
         /* ----------------------------------------------------------------- */
         ///
-        /// Name
+        /// Invoke
         ///
         /// <summary>
-        /// Gets or sets the name.
+        /// Tests the create, attach, send, and detach methods.
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        public string Name
+        [Test]
+        public void Invoke()
         {
-            get => Get<string>();
-            set => Set(value);
-        }
+            var view = Hack(new MockWindow());
+            var vm   = (MockViewModel)view.DataContext;
 
-        /* ----------------------------------------------------------------- */
-        ///
-        /// Age
-        ///
-        /// <summary>
-        /// Gets or sets the age.
-        /// </summary>
-        ///
-        /* ----------------------------------------------------------------- */
-        public int Age
-        {
-            get => Get<int>();
-            set => Set(value);
+            view.Show();
+            vm.Test(new ActivateMessage());
+            view.Close();
         }
 
         #endregion

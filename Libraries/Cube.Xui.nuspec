@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <package >
     <metadata>
-        <version>3.1.0</version>
+        <version>4.0.0</version>
         <id>Cube.Xui</id>
         <title>Cube.Xui</title>
         <authors>clown,cube-soft</authors>
         <owners>clown,cube-soft</owners>
-        <description>Support the MVVM pattern in WPF applications.</description>
+        <description>Bindings, converters, commands, behaviors, and other components to provide support the MVVM pattern in WPF applications.</description>
         <copyright>Copyright © 2010 CubeSoft, Inc.</copyright>
         <tags>Cube WPF MVVM Binding Behavior</tags>
         <icon>images\Icon.png</icon>
@@ -15,16 +15,16 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <dependencies>
             <group targetFramework="net45">
-                <dependency id="Cube.FileSystem" version="3.1.0" />
+                <dependency id="Cube.FileSystem" version="4.0.0" />
                 <dependency id="Expression.Blend.Sdk" version="1.0.2" />
             </group>
             <group targetFramework="net35">
-                <dependency id="Cube.FileSystem" version="3.1.0" />
+                <dependency id="Cube.FileSystem" version="4.0.0" />
                 <dependency id="Expression.Blend.Sdk3" version="1.0.1340.1" />
             </group>
-            <group targetFramework="netcoreapp3.0">
-                <dependency id="Cube.FileSystem" version="3.1.0" />
-                <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.19" />
+            <group targetFramework="net5.0-windows">
+                <dependency id="Cube.FileSystem" version="4.0.0" />
+                <dependency id="Microsoft.Xaml.Behaviors.Wpf" version="1.1.31" />
             </group>
         </dependencies>
     </metadata>
@@ -32,6 +32,6 @@
         <file src="..\Icon.png" target="images" />
         <file src="bin\Any CPU\Release\net45\Cube.Xui.*" target="lib\net45" />
         <file src="bin\Any CPU\Release\net35\Cube.Xui.*" target="lib\net35" />
-        <file src="bin\Any CPU\Release\netcoreapp3.0\Cube.Xui.*" target="lib\netcoreapp3.0" />
+        <file src="bin\Any CPU\Release\net5.0-windows\Cube.Xui.*" target="lib\net5.0-windows" />
     </files>
 </package>

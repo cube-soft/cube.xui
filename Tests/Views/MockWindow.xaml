@@ -44,8 +44,10 @@
       Interaction
     *********************************************************************** -->
     <i:Interaction.Behaviors>
+        <xb:ActivateBehavior />
         <xb:ApplyBehavior />
         <xb:CloseBehavior />
+        <xb:EventToCommand Event="Loaded" Command="{Binding Detect}" />
     </i:Interaction.Behaviors>
 
     <!-- **********************************************************************
