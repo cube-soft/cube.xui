@@ -22,9 +22,9 @@ require 'rake/clean'
 # configuration
 # --------------------------------------------------------------------------- #
 PROJECT   = "Cube.Xui"
-BRANCHES  = ["master", "netcoreapp3.0", "net35"]
+BRANCHES  = ["master", "net5.0", "net35"]
 PLATFORMS = ["Any CPU"]
-PACKAGES  = ["Libraries/#{PROJECT}"]
+PACKAGES  = ["Libraries/Cube.Xui"]
 
 # --------------------------------------------------------------------------- #
 # clean
@@ -57,7 +57,7 @@ task :build, [:platform] do |_, e|
     e.with_defaults(:platform => PLATFORMS[0])
 
     branch = %x(git rev-parse --abbrev-ref HEAD).chomp
-    build  = branch.start_with?("netstandard") || branch.start_with?("netcore") ?
+    build  = branch.include?(".") ?
              "dotnet build -c Release" :
              "msbuild -v:m -p:Configuration=Release"
 
@@ -71,7 +71,7 @@ end
 desc "Build projects in pre-defined branches and platforms."
 task :build_all, [:test] do |_, e|
     e.with_defaults(:test => false)
-    
+
     BRANCHES.product(PLATFORMS).each do |bp|
         checkout(bp[0]) do
             Rake::Task[:build].reenable
