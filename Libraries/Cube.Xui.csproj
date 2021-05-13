@@ -7,7 +7,7 @@
         <Copyright>Copyright © 2010 CubeSoft, Inc.</Copyright>
         <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
         <PackageTags>Cube;WPF;MVVM;Binding;Behavior</PackageTags>
-        <PackageProjectUrl>https://github.com/cube-soft/$(AssemblyName)</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/cube-soft/Cube.Xui</PackageProjectUrl>
         <PackageIcon>images\Icon.png</PackageIcon>
         <TargetFramework>net45</TargetFramework>
         <UseWpf>true</UseWpf>
