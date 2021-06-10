@@ -74,7 +74,7 @@ namespace Cube.Mixin.Logging
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenDispatcherError(object s, DispatcherUnhandledExceptionEventArgs e) =>
-            s.LogError(e.Exception);
+            s.GetType().LogError(e.Exception);
 
         /* ----------------------------------------------------------------- */
         ///
@@ -86,7 +86,7 @@ namespace Cube.Mixin.Logging
         ///
         /* ----------------------------------------------------------------- */
         private static void WhenDomainError(object s, UnhandledExceptionEventArgs e) =>
-            Cube.Logger.Error(typeof(AppDomain), e.ExceptionObject as Exception);
+            typeof(AppDomain).LogError(e.ExceptionObject as Exception);
 
         #endregion
     }
