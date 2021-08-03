@@ -17,6 +17,7 @@
 /* ------------------------------------------------------------------------- */
 using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 
 namespace Cube.Xui.Behaviors
 {
@@ -40,6 +41,23 @@ namespace Cube.Xui.Behaviors
         /// </summary>
         ///
         /* ----------------------------------------------------------------- */
-        protected override void Invoke(Uri e) => Process.Start(e.ToString());
+        protected override void Invoke(Uri e)
+        {
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                var cvt = e.ToString().Replace("&", "^&");
+                var psi = new ProcessStartInfo("cmd", $"/c start {cvt}") { CreateNoWindow = true };
+                _ = Process.Start(psi);
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                _ = Process.Start("xdg-open", e.ToString());
+            }
+            else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+            {
+                _ = Process.Start("open", e.ToString());
+            }
+            else throw new NotSupportedException();
+        }
     }
 }
